@@ -1,4 +1,5 @@
 import tokenizers
+import argparse
 from transformers import RobertaConfig
 from transformers import RobertaTokenizerFast
 from transformers import RobertaForMaskedLM
@@ -14,14 +15,21 @@ config = RobertaConfig(
     type_vocab_size=1,
 )
 
-tokenizers = RobertaTokenizerFast.from_pretrained("./icelandic", max_len=512)
+parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser.add_argument("--local_rank", type=int, help="Local rank. Necessary for using the torch.distributed.launch utility.")
+argv = parser.parse_args()
+
+local_rank = argv.local_rank
+
+
+tokenizers = RobertaTokenizerFast.from_pretrained('./icelandic', max_len=512)
 model = RobertaForMaskedLM(config=config)
 
 print(model.num_parameters())
 
 dataset = LineByLineTextDataset(
     tokenizer=tokenizers,
-    file_path="./data/is.txt",
+    file_path='./data/is.txt',
     block_size=128,
 )
 
@@ -30,12 +38,14 @@ data_collator = DataCollatorForLanguageModeling(
 )
 
 training_args = TrainingArguments(
-    output_dir="./icelandic",
+    local_rank=local_rank,
+    output_dir='./icelandic',
     overwrite_output_dir=True,
     num_train_epochs=1,
     per_gpu_train_batch_size=64,
-    save_steps=10_000,
-    save_total_limit=2,
+    model_path='./icelandic'
+    # save_steps=10_000,
+    # save_total_limit=2,
 )
 
 trainer = Trainer(
@@ -48,4 +58,8 @@ trainer = Trainer(
 
 
 trainer.train()
-trainer.save_model("./icelandic")
+
+trainer.save_model('./icelandic')
+
+
+# python -m torch.distributed.launch --nnodes=2 --node_rank=0 --master_addr=12213 --master_port=1234 train_icelandic_model.py --local_rank=0
