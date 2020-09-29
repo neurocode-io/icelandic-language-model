@@ -36,7 +36,7 @@ az vm extension set \
   --vm-name $vmName \
   --name NvidiaGpuDriverLinux \
   --publisher Microsoft.HpcCompute \
-  --version 1.3 
+  --version 1.3
 
 Install docker nvidia:
 
@@ -63,5 +63,4 @@ az vm extension delete \
     --name customScript
 
 
-
-docker run --gpus all -it --rm --ipc=host -v /code:/code --name icelandic donchev7/icelandic-model:v0 bash
+docker run --gpus all -it --rm --ipc=host -v /code:/code --name icelandic donchev7/icelandic-model:v0.1 bash

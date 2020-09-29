@@ -38,13 +38,15 @@ print(model.num_parameters())
 
 dataset = LineByLineTextDataset(
     tokenizer=tokenizers,
-    file_path="./data/is.txt",
+    file_path=f"{data_dir}/is.txt",
     block_size=128,
 )
 
 data_collator = DataCollatorForLanguageModeling(
     tokenizer=tokenizers, mlm=True, mlm_probability=0.15
 )
+
+print(f"local rank: {local_rank}")
 
 training_args = TrainingArguments(
     local_rank=local_rank,
@@ -54,7 +56,6 @@ training_args = TrainingArguments(
     per_gpu_train_batch_size=64,
     model_path=f"{data_dir}/icelandic",
     seed=42,
-    evaluate_during_training=True
     # save_steps=10_000,
     # save_total_limit=2,
 )

@@ -28,14 +28,4 @@ add-apt-repository \
 apt-get update
 apt-get install -y docker-ce docker-ce-cli containerd.io
  
-docker run hello-world
- 
-if [ $? -eq 0 ]
-then
-  echo "All good"
-else
-  echo "Couldnt install docker"
-  exit 1
-fi
-
 usermod -aG docker azureuser

@@ -17,5 +17,5 @@ then
   echo "All good"
 else
   echo "nvidia docker install error"
-  exi 1
+  exit 1
 fi
