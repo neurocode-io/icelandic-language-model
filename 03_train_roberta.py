@@ -16,20 +16,29 @@ config = RobertaConfig(
 )
 
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument("--local_rank", type=int, help="Local rank. Necessary for using the torch.distributed.launch utility.")
+parser.add_argument(
+    "--local_rank",
+    type=int,
+    help="Local rank. Necessary for using the torch.distributed.launch utility.",
+)
+parser.add_argument(
+    "--data_dir", type=str, help="Data directory for storage", default="./data"
+)
+
 argv = parser.parse_args()
 
 local_rank = argv.local_rank
+data_dir = argv.data_dir
 
 
-tokenizers = RobertaTokenizerFast.from_pretrained('./data/icelandic', max_len=512)
+tokenizers = RobertaTokenizerFast.from_pretrained(f"{data_dir}/icelandic", max_len=512)
 model = RobertaForMaskedLM(config=config)
 
 print(model.num_parameters())
 
 dataset = LineByLineTextDataset(
     tokenizer=tokenizers,
-    file_path='./data/is.txt',
+    file_path="./data/is.txt",
     block_size=128,
 )
 
@@ -39,11 +48,11 @@ data_collator = DataCollatorForLanguageModeling(
 
 training_args = TrainingArguments(
     local_rank=local_rank,
-    output_dir='./data/icelandic',
+    output_dir=f"{data_dir}/icelandic",
     overwrite_output_dir=True,
     num_train_epochs=5,
     per_gpu_train_batch_size=64,
-    model_path='./data/icelandic',
+    model_path=f"{data_dir}/icelandic",
     seed=42,
     evaluate_during_training=True
     # save_steps=10_000,
@@ -61,7 +70,7 @@ trainer = Trainer(
 
 trainer.train()
 
-trainer.save_model('./data/icelandic')
+trainer.save_model(f"{data_dir}/icelandic")
 
 
 # python -m torch.distributed.launch --nnodes=2 --node_rank=0 --master_addr=12213 --master_port=1234 03_train_roberta.py --local_rank=0

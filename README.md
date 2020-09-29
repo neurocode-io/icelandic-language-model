@@ -62,3 +62,6 @@ az vm extension delete \
     --vm-name $vmName \
     --name customScript
 
+
+
+docker run --gpus all -it --rm --ipc=host -v /code:/code --name icelandic donchev7/icelandic-model:v0 bash

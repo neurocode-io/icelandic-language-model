@@ -1,20 +1,14 @@
-from pathlib import Path
+import argparse
 from tokenizers import ByteLevelBPETokenizer
+from language_model.tokenizer import Tokenizer
 
-paths = [str(x) for x in Path('./data/').glob('*.txt')]
-tokenizer = ByteLevelBPETokenizer()
+parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser.add_argument("--data_dir", type=str, help="Data directory for storage", default="")
+argv = parser.parse_args()
 
+data_dir = argv.data_dir
 
-# TODO change to argparse
+byteLevelTok = ByteLevelBPETokenizer()
+T = Tokenizer(byteLevelTok, data_dir)
 
-tokenizer.train(files=paths, vocab_size=52_000, min_frequency=2, special_tokens=[
-    '<s>',
-    '<pad>',
-    '</s>',
-    '<unk>',
-    '<mask>',
-])
-
-Path('./data/icelandic').mkdir(parents=True, exist_ok=True)
-
-tokenizer.save_model('./data/icelandic')
+T.train()

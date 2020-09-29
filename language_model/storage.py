@@ -55,7 +55,7 @@ class Storage:
 
     def unzip(self):
         with gzip.open(f"{self.data_dir}/is.txt.gz", "rb") as compressed:
-            with open("is.txt", "wb") as isl:
+            with open(f"{self.data_dir}/is.txt", "wb") as isl:
                 isl.write(compressed.read())
 
     def fetch_dataset(self):
