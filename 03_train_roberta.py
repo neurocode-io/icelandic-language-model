@@ -22,7 +22,7 @@ argv = parser.parse_args()
 local_rank = argv.local_rank
 
 
-tokenizers = RobertaTokenizerFast.from_pretrained('./icelandic', max_len=512)
+tokenizers = RobertaTokenizerFast.from_pretrained('./data/icelandic', max_len=512)
 model = RobertaForMaskedLM(config=config)
 
 print(model.num_parameters())
@@ -39,11 +39,13 @@ data_collator = DataCollatorForLanguageModeling(
 
 training_args = TrainingArguments(
     local_rank=local_rank,
-    output_dir='./icelandic',
+    output_dir='./data/icelandic',
     overwrite_output_dir=True,
-    num_train_epochs=1,
+    num_train_epochs=5,
     per_gpu_train_batch_size=64,
-    model_path='./icelandic'
+    model_path='./data/icelandic',
+    seed=42,
+    evaluate_during_training=True
     # save_steps=10_000,
     # save_total_limit=2,
 )
@@ -59,7 +61,7 @@ trainer = Trainer(
 
 trainer.train()
 
-trainer.save_model('./icelandic')
+trainer.save_model('./data/icelandic')
 
 
-# python -m torch.distributed.launch --nnodes=2 --node_rank=0 --master_addr=12213 --master_port=1234 train_icelandic_model.py --local_rank=0
+# python -m torch.distributed.launch --nnodes=2 --node_rank=0 --master_addr=12213 --master_port=1234 03_train_roberta.py --local_rank=0

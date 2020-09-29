@@ -4,6 +4,9 @@ from tokenizers import ByteLevelBPETokenizer
 paths = [str(x) for x in Path('./data/').glob('*.txt')]
 tokenizer = ByteLevelBPETokenizer()
 
+
+# TODO change to argparse
+
 tokenizer.train(files=paths, vocab_size=52_000, min_frequency=2, special_tokens=[
     '<s>',
     '<pad>',
@@ -12,8 +15,6 @@ tokenizer.train(files=paths, vocab_size=52_000, min_frequency=2, special_tokens=
     '<mask>',
 ])
 
-# Save files to disk
-tokenizer.save_model('./icelandic')
+Path('./data/icelandic').mkdir(parents=True, exist_ok=True)
 
-
-
+tokenizer.save_model('./data/icelandic')

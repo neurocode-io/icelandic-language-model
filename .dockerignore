@@ -1,0 +1,7 @@
+.git
+azure/
+.gitingore
+Pipfile
+README.md
+data/
+.env
