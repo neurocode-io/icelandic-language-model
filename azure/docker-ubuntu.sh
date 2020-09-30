@@ -1,6 +1,7 @@
 #!/bin/bash
 
-apt-get remove docker docker-engine docker.io containerd runc
+set -e
+
 apt-get update
 apt-get install -y \
     apt-transport-https \
@@ -17,7 +18,7 @@ then
   echo "All good"
 else
   echo "Wrong fingerprint"
-  exi 1
+  exit 1
 fi
 
 add-apt-repository \

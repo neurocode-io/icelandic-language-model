@@ -6,9 +6,10 @@ COPY requirements.txt .
 RUN pip install --user -r requirements.txt
 
 COPY src/ src/
+COPY Makefile .
 
 # update PATH environment variable
 ENV PATH=/root/.local:$PATH
 
-CMD [ "python", "/code/01_fetch_data.py" ]
+CMD [ "python", "src/01_fetch_data.py" ]
 

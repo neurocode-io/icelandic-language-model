@@ -1,12 +1,15 @@
-from threading import local
 import tokenizers
 import argparse
+import wandb
 from transformers import RobertaConfig
 from transformers import RobertaTokenizerFast
 from transformers import RobertaForMaskedLM
 from transformers import LineByLineTextDataset
 from transformers import DataCollatorForLanguageModeling
 from transformers import Trainer, TrainingArguments
+from language_model.config import settings
+
+wandb.login()
 
 config = RobertaConfig(
     vocab_size=52_000,

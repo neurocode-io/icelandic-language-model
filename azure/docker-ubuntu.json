@@ -1,4 +1,4 @@
 {
-  "fileUris": ["https://gist.githubusercontent.com/donchev7/681ddf408d7ed643cf64bda7a67281f5/raw/acab1f49d706be1fc72e4a8a993bd1793127a2a4/docker-ubuntu.sh"],
+  "fileUris": ["https://gist.githubusercontent.com/donchev7/681ddf408d7ed643cf64bda7a67281f5/raw/9cafa7a9cdd0bd0320ecfe4a09d9455f48c2e920/docker-ubuntu.sh"],
   "commandToExecute": "./docker-ubuntu.sh"
 }

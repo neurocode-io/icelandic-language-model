@@ -29,3 +29,5 @@ deploy:
 create_machine:
 	azure/create_vm.sh
 
+delete_machine:
+	azure/delete_vm.sh
