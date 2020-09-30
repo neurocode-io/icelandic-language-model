@@ -54,9 +54,8 @@ training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=5,
     per_gpu_train_batch_size=64,
-    model_path=f"{data_dir}/icelandic",
     seed=42,
-    # save_steps=10_000,
+    save_steps=10_000,
     # save_total_limit=2,
 )
 
