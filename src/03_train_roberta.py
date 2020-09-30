@@ -7,7 +7,7 @@ from transformers import RobertaForMaskedLM
 from transformers import LineByLineTextDataset
 from transformers import DataCollatorForLanguageModeling
 from transformers import Trainer, TrainingArguments
-from language_model.config import settings
+from language_model.config import Settings
 
 wandb.login()
 
@@ -24,6 +24,7 @@ parser.add_argument(
     "--local_rank",
     type=int,
     help="Local rank. Necessary for using the torch.distributed.launch utility.",
+    default=-1
 )
 parser.add_argument("--data_dir", type=str, help="Data directory for storage", default="./data")
 
@@ -52,8 +53,8 @@ training_args = TrainingArguments(
     local_rank=local_rank,
     output_dir=f"{data_dir}/icelandic",
     overwrite_output_dir=True,
-    num_train_epochs=5,
-    per_gpu_train_batch_size=64,
+    num_train_epochs=2,
+    per_device_train_batch_size=16,
     seed=42,
     save_steps=10_000,
     # save_total_limit=2,
