@@ -7,6 +7,8 @@ env_path = Path(".")
 load_dotenv()
 print(f"Loading config from: {env_path.cwd()}")
 
-settings = DictX({
-    "access_key": environ["ACCESS_KEY"],
-})
+settings = DictX(
+    {
+        "access_key": environ["ACCESS_KEY"],
+    }
+)

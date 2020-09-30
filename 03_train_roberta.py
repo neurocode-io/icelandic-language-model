@@ -1,3 +1,4 @@
+from threading import local
 import tokenizers
 import argparse
 from transformers import RobertaConfig
@@ -21,9 +22,7 @@ parser.add_argument(
     type=int,
     help="Local rank. Necessary for using the torch.distributed.launch utility.",
 )
-parser.add_argument(
-    "--data_dir", type=str, help="Data directory for storage", default="./data"
-)
+parser.add_argument("--data_dir", type=str, help="Data directory for storage", default="./data")
 
 argv = parser.parse_args()
 
@@ -42,9 +41,7 @@ dataset = LineByLineTextDataset(
     block_size=128,
 )
 
-data_collator = DataCollatorForLanguageModeling(
-    tokenizer=tokenizers, mlm=True, mlm_probability=0.15
-)
+data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizers, mlm=True, mlm_probability=0.15)
 
 print(f"local rank: {local_rank}")
 
@@ -67,7 +64,6 @@ trainer = Trainer(
     train_dataset=dataset,
     prediction_loss_only=True,
 )
-
 
 trainer.train()
 

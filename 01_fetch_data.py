@@ -1,4 +1,3 @@
-
 import argparse
 from azure.storage.blob import BlobServiceClient
 from language_model.storage import Storage
