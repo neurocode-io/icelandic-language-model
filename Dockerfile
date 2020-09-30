@@ -5,7 +5,7 @@ COPY requirements.txt .
 
 RUN pip install --user -r requirements.txt
 
-COPY . .
+COPY src/ src/
 
 # update PATH environment variable
 ENV PATH=/root/.local:$PATH

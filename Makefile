@@ -28,3 +28,4 @@ deploy:
 
 create_machine:
 	azure/create_vm.sh
+
