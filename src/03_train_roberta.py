@@ -21,10 +21,7 @@ config = RobertaConfig(
 
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument(
-    "--local_rank",
-    type=int,
-    help="Local rank. Necessary for using the torch.distributed.launch utility.",
-    default=-1
+    "--local_rank", type=int, help="Local rank. Necessary for using the torch.distributed.launch utility.", default=-1
 )
 parser.add_argument("--data_dir", type=str, help="Data directory for storage", default="./data")
 

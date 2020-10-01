@@ -1,10 +1,11 @@
 import os
 import gzip
 import requests
+from azure.storage.blob import ContainerClient
 
 
 class Storage:
-    def __init__(self, client, data_dir=""):
+    def __init__(self, client: ContainerClient, data_dir=""):
         if data_dir:
             self.data_dir = data_dir
         else:
@@ -45,7 +46,7 @@ class Storage:
     def download(self):
         blob = self.get_blob()
 
-        if not blob:
+        if blob is None:
             return self.download_from_internet()
 
         stream = self.client.download_blob(blob)
