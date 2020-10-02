@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 from azure.storage.blob import ContainerClient
-from azure.storage.blob import BlobClient
 
 
 class Tokenizer:
@@ -46,8 +45,7 @@ class Tokenizer:
         self.tokenizer.save_model(f"{self.data_dir}/icelandic")
     
         with open (f"{self.data_dir}/icelandic", "rb") as tok:
-            self.client.upload_blob(tok)
-
+            self.client.upload_blob(name="tokens", data=tok)
 
 
     def fetch_tokenizer(self):
