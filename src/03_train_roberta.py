@@ -50,10 +50,10 @@ training_args = TrainingArguments(
     local_rank=local_rank,
     output_dir=f"{data_dir}/icelandic",
     overwrite_output_dir=True,
-    num_train_epochs=2,
-    per_device_train_batch_size=16,
+    num_train_epochs=1,
+    per_device_train_batch_size=48, # Nvidia K80 99%
     seed=42,
-    save_steps=10_000,
+    # save_steps=10_000,
     # save_total_limit=2,
 )
 

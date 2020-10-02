@@ -1,4 +1,4 @@
 {
-  "fileUris": ["https://gist.githubusercontent.com/donchev7/902e8da57921a1ef63115a797fe97458/raw/5f0df2cb9adcfdde4b708e3eca30db22a01fe431/nvidia-docker.sh"],
+  "fileUris": ["https://gist.githubusercontent.com/donchev7/902e8da57921a1ef63115a797fe97458/raw/0c49d035759e6238e4cab89a65aaa01ef5147208/nvidia-docker.sh"],
   "commandToExecute": "./nvidia-docker.sh"
 }

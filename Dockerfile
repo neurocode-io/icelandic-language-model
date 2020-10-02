@@ -12,4 +12,3 @@ COPY Makefile .
 ENV PATH=/root/.local:$PATH
 
 CMD [ "python", "src/01_fetch_data.py" ]
-
