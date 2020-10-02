@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from azure.storage.blob import ContainerClient
+from azure.storage.blob import BlobClient
 
 
 class Tokenizer:
@@ -24,7 +25,8 @@ class Tokenizer:
 
         return None
 
-    def train(self):
+
+    def train(self): 
         paths = [str(x) for x in Path(self.data_dir).glob("*.txt")]
 
         self.tokenizer.train(
@@ -41,8 +43,10 @@ class Tokenizer:
         )
 
         Path(f"{self.data_dir}/icelandic").mkdir(parents=True, exist_ok=True)
-
         self.tokenizer.save_model(f"{self.data_dir}/icelandic")
+    
+        with open (f"{self.data_dir}/icelandic", "rb") as tok:
+            self.client.upload_blob(tok)
 
 
 
