@@ -6,4 +6,4 @@
 - [ ] Add docu how to run the container in the VM
 - [ ] Add package installation verifications (transformers / CUDA ...)
 
-docker run --gpus all -it --rm --ipc=host -v /tmp:/tmp --name icelandic donchev7/icelandic-model:v77e5ba1 bash
+docker run --gpus all -it --rm --ipc=host -v /tmp:/tmp --name icelandic donchev7/icelandic-model:v72a4c67 bash
