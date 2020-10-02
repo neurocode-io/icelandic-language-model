@@ -1,9 +1,10 @@
 import os
 from pathlib import Path
+from azure.storage.blob import ContainerClient
 
 
 class Tokenizer:
-    def __init__(self, tokenizer, data_dir=""):
+    def __init__(self, client, tokenizer, data_dir=""):
         if data_dir:
             self.data_dir = data_dir
         else:
@@ -11,14 +12,19 @@ class Tokenizer:
 
         print(self.data_dir)
         self.tokenizer = tokenizer
+        self.client = client
 
     def is_local_store(self):
         return os.path.exists(f"{self.data_dir}/icelandic/vocab.json")
 
-    def train(self):
-        if self.is_local_store():
-            return
+    def get_tokenizer_from_blob(self):
+        for blob in self.client.list_blobs():
+            if blob.name == "vocab.json" and blob.name == "merges.txt":
+                return blob
 
+        return None
+
+    def train(self):
         paths = [str(x) for x in Path(self.data_dir).glob("*.txt")]
 
         self.tokenizer.train(
@@ -37,3 +43,14 @@ class Tokenizer:
         Path(f"{self.data_dir}/icelandic").mkdir(parents=True, exist_ok=True)
 
         self.tokenizer.save_model(f"{self.data_dir}/icelandic")
+
+
+
+    def fetch_tokenizer(self):
+        if  self.is_local_store():
+            return 
+        
+        if self.get_tokenizer_from_blob():
+            return 
+        
+        self.train()

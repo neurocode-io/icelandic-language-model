@@ -8,6 +8,7 @@ argv = parser.parse_args()
 
 data_dir = argv.data_dir
 
+
 byteLevelTok = ByteLevelBPETokenizer()
 T = Tokenizer(byteLevelTok, data_dir)
 

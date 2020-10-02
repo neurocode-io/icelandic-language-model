@@ -2,7 +2,8 @@ import argparse
 from azure.storage.blob import BlobServiceClient
 from language_model.storage import Storage
 from language_model.config import Settings
-
+from tokenizers import ByteLevelBPETokenizer
+from language_model.tokenizer import Tokenizer
 
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument("--data_dir", type=str, help="Data directory for storage", default="")
@@ -19,6 +20,8 @@ client = service.get_container_client(storage_container)
 
 
 s = Storage(client, data_dir)
+byteLevelTok = ByteLevelBPETokenizer()
+T = Tokenizer(client, byteLevelTok, data_dir)
 
 s.fetch_dataset()
-
+T.fetch_tokenizer()
