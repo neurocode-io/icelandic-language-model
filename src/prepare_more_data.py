@@ -1,20 +1,19 @@
 import os
 import tarfile
-import zipfile
+import glob
 
-os.chdir("/home/elena/Projects/neurocode/icelandic-language-model/src")
-print(os.getcwd())
+# def extract_from_tar_files():
+#     for tar_fname in glob.glob('/home/elena/Downloads/*.tar.gz'):
+#         t=tarfile.open(tar_fname, 'r:gz')
+#         t.extractall('.', members=[m for m in t.getmembers() if "sentences.txt" in m.name])
+#         t.close()
 
-def extract_tar_files(tname):
-    with tarfile.open(tname, "r:gz") as tf:
-        tf.extractall("./data/")
 
+# extract_from_tar_files()
 
-extract_tar_files("./data/isl_newscrawl_2019_300K.tar.gz")
-
-def open_file(fname):
+def edit_file(fname):
     in_f = open(fname, "r")
-    out_f = open('./data/final_file.txt', "w")
+    out_f = open('/home/elena/Projects/neurocode/icelandic-language-model/src/data/data_Leipzig.txt', "w")
     for line in in_f:
         items = line.split()
         # skipping row number
@@ -25,5 +24,5 @@ def open_file(fname):
     in_f.close()
     out_f.close()
 
-open_file("./data/isl_newscrawl_2019_300K/isl_newscrawl_2019_300K-sentences.txt")
+edit_file("/home/elena/Projects/neurocode/icelandic-language-model/src/data/isl_newscrawl_2019_300K/isl_newscrawl_2019_300K-sentences.txt")
 
