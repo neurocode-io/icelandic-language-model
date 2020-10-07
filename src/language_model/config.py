@@ -12,3 +12,4 @@ print(f"Loading config from: {env_path.cwd()}")
 @dataclass
 class Settings:
     access_key = environ["ACCESS_KEY"]
+    logging_level = environ.get("LOG_LEVEL", "INFO")
