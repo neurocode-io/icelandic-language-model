@@ -1,31 +1,44 @@
-import os
 from pathlib import Path
-from azure.storage.blob import ContainerClient
 
+from transformers.tokenization_roberta import RobertaTokenizerFast
+from language_model.lib import (
+    log,
+    azure_storage
+)
+from transformers.tokenization_utils import PreTrainedTokenizer
+
+logger = log.get_logger(__file__)
 
 class Tokenizer:
-    def __init__(self, client, tokenizer, data_dir=""):
-        if data_dir:
-            self.data_dir = data_dir
-        else:
-            self.data_dir = f"{os.getcwd()}/data"
+    def __init__(self, data_dir: Path, tokenizer: PreTrainedTokenizer):
+        assert data_dir, "data_dir input needed"
 
-        print(self.data_dir)
+        self.data_dir = data_dir
         self.tokenizer = tokenizer
-        self.client = client
 
     def is_local_store(self):
-        return os.path.exists(f"{self.data_dir}/icelandic/vocab.json")
+        vocab = self.data_dir / "vocab.json"
+        merges = self.data_dir / "merges.txt"
 
-    def get_tokenizer_from_blob(self):
-        for blob in self.client.list_blobs():
-            if blob.name == "vocab.json" and blob.name == "merges.txt":
-                return blob
+        return vocab.exists() and merges.exists()
 
-        return None
+    def isComputed(self):
+        if self.is_local_store():
+            return True
+
+        logger.info("Tokenizer not stored locally. Will check in azure")
+    
+        if azure_storage.exists(f"{self.data_dir}/vocab.json"):
+            azure_storage.download(f"{self.data_dir}/vocab.json", f"{self.data_dir}/vocab.json")
+
+        if azure_storage.exists(f"{self.data_dir}/merges.txt"):
+            azure_storage.download(f"{self.data_dir}/merges.txt" , f"{self.data_dir}/merges.txt")
+            return True
+        
+        return False
 
 
-    def train(self): 
+    def train(self):
         paths = [str(x) for x in Path(self.data_dir).glob("*.txt")]
 
         self.tokenizer.train(
@@ -41,18 +54,16 @@ class Tokenizer:
             ],
         )
 
-        Path(f"{self.data_dir}/icelandic").mkdir(parents=True, exist_ok=True)
-        self.tokenizer.save_model(f"{self.data_dir}/icelandic")
-    
-        with open (f"{self.data_dir}/icelandic", "rb") as tok:
-            self.client.upload_blob(name="tokens", data=tok)
+        self.tokenizer.save_model(f"{self.data_dir}")
 
+    def create_tokenizer(self):
+        if self.isComputed():
+            logger.info("Tokenizer for this dataset has already been created")
+            self.tokenizer = RobertaTokenizerFast.from_pretrained(f"{self.data_dir}", max_len=512)
+            return
 
-    def fetch_tokenizer(self):
-        if  self.is_local_store():
-            return 
-        
-        if self.get_tokenizer_from_blob():
-            return 
-        
+        logger.info(f"Training tokenizer on data in {self.data_dir}")
+
         self.train()
+        azure_storage.upload(self.data_dir / "vocab.json")
+        azure_storage.upload(self.data_dir / "merges.txt")
