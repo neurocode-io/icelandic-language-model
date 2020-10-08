@@ -9,13 +9,14 @@ curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.li
 
 # Because of Microsoft not properly installing cuda :/
 set +e
+sleep 20
 ps -ef | grep apt | awk '{ print $2 }' | xargs kill -9
 set -e
 
 apt-get update
 dpkg --configure -a
+apt-get install -y nvidia-driver-450 nvidia-cuda-toolkit
 apt-get install -y nvidia-docker2
-apt autoremove -y
 systemctl restart docker
 
 

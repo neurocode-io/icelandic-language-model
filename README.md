@@ -60,9 +60,9 @@ ssh azureuser@<machine_ip>
 
 screen
 
-docker run --gpus all -it --rm --ipc=host -v /tmp:/tmp --name icelandic donchev7/icelandic-model:v22dae57 python src/main.py --data_dir=/tmp --run_name=<SundayRunV1> 
+docker run --gpus all -it --rm --ipc=host -v /tmp:/tmp --name icelandic donchev7/icelandic-model:v8007e14 python src/main.py --data_dir=/tmp --run_name=<SundayRunV1> 
 
-CTRL+a , d to detatch from your screen session
+CTRL + d to detatch from your screen session
 
 exit
 ```
