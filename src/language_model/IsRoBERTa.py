@@ -38,14 +38,19 @@ class IsRoBERTa:
 
         self.data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=True, mlm_probability=0.15)
 
+
+    def get_model_files(self):
+        return [str(x) for x in Path(self.model_dir).glob("*")]
+
+
     def upload(self):
-        paths = [str(x) for x in Path(self.model_dir).glob("*")]
+        paths = self.get_model_files()
 
         for file in paths:
             azure_storage.upload(file)
 
     def has_started(self):
-        paths = [str(x) for x in Path(self.model_dir).glob("*")]
+        paths = self.get_model_files()
 
         for path in paths:
             if "checkpoint" in path:
@@ -54,8 +59,8 @@ class IsRoBERTa:
         return False
 
     def get_latest_checkpoint(self):
-        paths = [str(x) for x in Path(self.model_dir).glob("*")]
-
+        paths = self.get_model_files()
+        
         checkpoints = [path for path in paths if "checkpoint" in path]
 
         return sorted(checkpoints)[-1]

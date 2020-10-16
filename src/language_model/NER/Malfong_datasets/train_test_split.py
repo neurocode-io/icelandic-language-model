@@ -37,15 +37,15 @@ def read_textfiles(files, target_path, name):
         big_frame.to_csv(target_path + name, sep="\t", header=False, index=False)
 
 def train_test_split(target_path, path_to_folder):
-    trainfile=Path(target_path+'train_temp.txt')
-    testfile=Path(target_path+'test_temp.txt')
+    trainfile=Path(target_path+'train.txt')
+    testfile=Path(target_path+'test.txt')
     if trainfile.exists() and testfile.exists():
         print('train and test files exist')
         exit()
     
     train_files, test_files = file_split(path_to_folder)
-    read_textfiles(test_files, target_path, 'test_temp.txt')
-    read_textfiles(train_files, target_path, 'train_temp.txt')
+    read_textfiles(test_files, target_path, 'test.txt')
+    read_textfiles(train_files, target_path, 'train.txt')
 
 
 
