@@ -1,9 +1,9 @@
-
-from transformers import RobertaForTokenClassification, AutoModelForTokenClassification
+from transformers import RobertaForTokenClassification, AutoModelForTokenClassification, AutoConfig
 from pathlib import Path
 
 from transformers import Trainer, TrainingArguments
 from torch.utils.data.dataset import Dataset
+from language_model.NER.utils import get_labels
 from language_model.lib import log, azure_storage
 
 logger = log.get_logger(__file__)
@@ -15,6 +15,12 @@ class IsRoBERTa:
 
         self.model_dir = f"{data_dir}/results"
         self.dataset = dataset
+        self.config = AutoConfig.from_pretrained(
+            "neurocode/IsRoBERTa",
+            num_labels=len(get_labels()),
+            id2label={i: label for i, label in enumerate(get_labels())},
+            label2id={label: i for i, label in enumerate(get_labels())},
+        )
         self.training_args = TrainingArguments(
             run_name=data_dir.name,
             local_rank=local_rank,
@@ -57,13 +63,9 @@ class IsRoBERTa:
             model = AutoModelForTokenClassification.from_pretrained(last_checkpoint, config=self.config)
 
         else:
-            model = RobertaForTokenClassification.from_pretrained("neurocode/IsRoBERTa")
+            model = RobertaForTokenClassification.from_pretrained("neurocode/IsRoBERTa", config=self.config)
 
-        trainer = Trainer(
-            model=model,
-            args=self.training_args,
-            train_dataset=self.dataset
-        )
+        trainer = Trainer(model=model, args=self.training_args, train_dataset=self.dataset)
 
         trainer.train()
 
