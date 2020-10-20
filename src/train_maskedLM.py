@@ -1,11 +1,10 @@
 import argparse
 import wandb
 from pathlib import Path
-from language_model.IsRoBERTa import IsRoBERTa
-from language_model.dataset.oscar import Oscar
+from language_model.MaskedLM.IsRoBERTa import IsRoBERTa
+from language_model.MaskedLM.dataset.oscar import Oscar
 from language_model.lib.log import get_logger
-from language_model.dataset.oscar import Oscar
-from language_model.tokenizer import Tokenizer
+from language_model.MaskedLM.tokenizer import Tokenizer
 from tokenizers import ByteLevelBPETokenizer
 from transformers import LineByLineTextDataset, TextDataset, RobertaTokenizerFast
 
