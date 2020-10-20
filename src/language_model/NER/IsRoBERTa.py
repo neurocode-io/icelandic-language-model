@@ -5,21 +5,17 @@ from pathlib import Path
 from transformers import Trainer, TrainingArguments
 from torch.utils.data.dataset import Dataset
 from transformers.modeling_auto import AutoModelForMaskedLM
-from transformers.tokenization_utils import PreTrainedTokenizer
 from language_model.lib import log, azure_storage
 
 logger = log.get_logger(__file__)
 
-# tokenizer = AutoTokenizer.from_pretrained("neurocode/IsRoBERTa")
-# model = AutoModelForMaskedLM.from_pretrained("neurocode/IsRoBERTa")
 
 class IsRoBERTa:
-    def __init__(self, data_dir: Path, tokenizer: PreTrainedTokenizer, dataset: Dataset, local_rank=-1):
+    def __init__(self, data_dir: Path, dataset: Dataset, local_rank=-1):
         assert data_dir, "data_dir input needed"
 
         self.model_dir = f"{data_dir}/results"
         self.dataset = dataset
-        self.tokenizer = tokenizer
         self.training_args = TrainingArguments(
             run_name=data_dir.name,
             local_rank=local_rank,
@@ -67,8 +63,7 @@ class IsRoBERTa:
         trainer = Trainer(
             model=model,
             args=self.training_args,
-            train_dataset=self.dataset,
-            tokenizer=self.tokenizer
+            train_dataset=self.dataset
         )
 
         trainer.train()

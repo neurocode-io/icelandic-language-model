@@ -2,7 +2,7 @@ import argparse
 import wandb
 from pathlib import Path
 from language_model.NER import utils
-from language_model.NER import dataset
+from language_model.NER.dataset import TokenClassificationDataset
 from language_model.NER.malfong import Malfong
 from language_model.NER.IsRoBERTa import IsRoBERTa
 from language_model.lib.log import get_logger
@@ -37,12 +37,10 @@ dataset_filename = "malfong_ner.txt"
 malfong = Malfong(data_dir)
 malfong.download()
 
-data = utils.file_to_sentences(data_dir / dataset_filename)
 max_seq_length = 128
 tokenizer = AutoTokenizer.from_pretrained("neurocode/IsRoBERTa")
-features = utils.convert_examples_to_features(data, tokenizer, utils.get_labels(), max_seq_length)
-dataset = dataset.create_dataset(features)
-model = IsRoBERTa(data_dir, tokenizer=tokenizer, dataset=dataset)
+dataset = TokenClassificationDataset(data_dir / dataset_filename, tokenizer, max_seq_length)
+model = IsRoBERTa(data_dir, dataset=dataset)
 
 
 

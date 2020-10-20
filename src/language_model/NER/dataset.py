@@ -1,11 +1,29 @@
-import torch
-from torch.utils.data import TensorDataset
+from typing import List
+from torch.utils.data import Dataset
+from torch import nn
+from transformers.tokenization_utils import PreTrainedTokenizer
+from language_model.NER.types import InputFeatures
+
+from language_model.NER import utils
 
 
-def create_dataset(features):
-    all_input_ids = torch.tensor([f.input_ids for f in features], dtype=torch.long)
-    all_label_ids = torch.tensor([f.label_id for f in features], dtype=torch.long)
-    all_valid_ids = torch.tensor([f.valid_ids for f in features], dtype=torch.long)
-    all_lmask_ids = torch.tensor([f.label_mask for f in features], dtype=torch.long)
+class TokenClassificationDataset(Dataset):
+    features: List[InputFeatures]
+    pad_token_label_id: int = nn.CrossEntropyLoss().ignore_index
 
-    return TensorDataset(all_input_ids, all_label_ids, all_lmask_ids, all_valid_ids)
+    def __init__(self, file_path: str, tokenizer: PreTrainedTokenizer, max_seq_length=128):
+        examples = utils.read_examples_from_file(file_path)
+        self.features = utils.convert_examples_to_features(
+            examples=examples,
+            label_list=utils.get_labels(),
+            max_seq_length=max_seq_length,
+            tokenizer=tokenizer,
+            cls_token_segment_id=0,
+            pad_token_label_id=self.pad_token_label_id
+        )
+
+    def __len__(self):
+        return len(self.features)
+
+    def __getitem__(self, i):
+        return self.features[i]
