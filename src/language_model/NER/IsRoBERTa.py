@@ -28,7 +28,7 @@ class IsRoBERTa:
         )
 
     def upload(self):
-        paths = [str(x) for x in Path(self.model_dir).glob("*")]
+        paths = [str(x) for x in Path(self.model_dir).glob("**/*")]
 
         for file in paths:
             azure_storage.upload(file)

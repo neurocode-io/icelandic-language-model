@@ -11,4 +11,4 @@ COPY Makefile .
 # update PATH environment variable
 ENV PATH=/root/.local:$PATH
 
-CMD [ "python", "src/01_fetch_data.py" ]
+CMD [ "python", "src/train_maskedLM.py" ]

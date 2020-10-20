@@ -1,6 +1,7 @@
 from pathlib import Path
 from azure.storage.blob import BlobServiceClient
 from language_model.config import Settings
+from language_model.lib.log import get_logger
 
 account_url = "https://neurocode2290877122.blob.core.windows.net"
 storage_container = "icelandic-model"
@@ -9,6 +10,7 @@ creds = Settings().access_key
 service = BlobServiceClient(account_url, creds)
 client = service.get_container_client(storage_container)
 
+logger = get_logger(__file__)
 
 def upload(local_path: Path):
     assert local_path, "local paths needed"
@@ -18,7 +20,10 @@ def upload(local_path: Path):
         remote_path = remote_path[1:]
 
     with open(local_path, "rb") as f:
-        client.upload_blob(remote_path, f)
+        try:
+            client.upload_blob(remote_path, f)
+        except IsADirectoryError:
+            logger.warn("Cant upload dirs")
 
 
 def download(remote_path: str, local_path: str):

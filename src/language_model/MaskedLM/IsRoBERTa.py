@@ -39,7 +39,7 @@ class IsRoBERTa:
         self.data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=True, mlm_probability=0.15)
 
     def upload(self):
-        paths = [str(x) for x in Path(self.model_dir).glob("*")]
+        paths = [str(x) for x in Path(self.model_dir).glob("**/*")]
 
         for file in paths:
             azure_storage.upload(file)

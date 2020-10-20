@@ -60,7 +60,7 @@ ssh azureuser@<machine_ip>
 
 screen
 
-docker run --gpus all -it --rm --ipc=host -v /tmp:/tmp --name icelandic donchev7/icelandic-model:v7eb6216 python src/train_maskedLM.py --data_dir=/tmp --run_name=<SundayRunV1> 
+docker run --gpus all -it --rm --ipc=host -v /tmp:/tmp --name icelandic donchev7/icelandic-model:v96e5fab python src/train_maskedLM.py --data_dir=/tmp --run_name=<SundayRunV1> 
 
 CTRL + d to detatch from your screen session
 
