@@ -1,7 +1,6 @@
 import argparse
 import wandb
 from pathlib import Path
-from language_model.NER import utils
 from language_model.NER.dataset import TokenClassificationDataset
 from language_model.NER.malfong import Malfong
 from language_model.NER.IsRoBERTa import IsRoBERTa
@@ -41,7 +40,6 @@ max_seq_length = 128
 tokenizer = AutoTokenizer.from_pretrained("neurocode/IsRoBERTa")
 dataset = TokenClassificationDataset(data_dir / dataset_filename, tokenizer, max_seq_length)
 model = IsRoBERTa(data_dir, dataset=dataset)
-
 
 
 model.train()

@@ -1,10 +1,9 @@
 
-from transformers import AutoModelForMaskedLM, AutoModelForTokenClassification
+from transformers import RobertaForTokenClassification, AutoModelForTokenClassification
 from pathlib import Path
 
 from transformers import Trainer, TrainingArguments
 from torch.utils.data.dataset import Dataset
-from transformers.modeling_auto import AutoModelForMaskedLM
 from language_model.lib import log, azure_storage
 
 logger = log.get_logger(__file__)
@@ -58,7 +57,7 @@ class IsRoBERTa:
             model = AutoModelForTokenClassification.from_pretrained(last_checkpoint, config=self.config)
 
         else:
-            model = AutoModelForMaskedLM.from_pretrained("neurocode/IsRoBERTa")
+            model = RobertaForTokenClassification.from_pretrained("neurocode/IsRoBERTa")
 
         trainer = Trainer(
             model=model,
