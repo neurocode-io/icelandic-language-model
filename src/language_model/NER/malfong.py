@@ -49,6 +49,10 @@ class Malfong:
         if self.is_local_store():
             logger.info("Data already exists")
             return
+        
+        file_path = f"{self.data_dir}/{self.file_name}"
+        if azure_storage.exists(file_path):
+            return azure_storage.download(file_path, file_path)
 
         url = "http://www.malfong.is/tmp/3C786F63-4B3D-EEB0-61AA-552445E652BA.zip"
         target_path = self.data_dir / "malfong_ner.zip"
