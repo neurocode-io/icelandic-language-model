@@ -1,4 +1,5 @@
 from pathlib import Path
+from azure.core.exceptions import ResourceExistsError
 from azure.storage.blob import BlobServiceClient
 from language_model.config import Settings
 from language_model.lib.log import get_logger
@@ -12,18 +13,21 @@ client = service.get_container_client(storage_container)
 
 logger = get_logger(__file__)
 
+
 def upload(local_path: Path):
     assert local_path, "local paths needed"
 
     remote_path = str(local_path)
-    if remote_path.startswith('/'):
+    if remote_path.startswith("/"):
         remote_path = remote_path[1:]
 
-    with open(local_path, "rb") as f:
-        try:
+    try:
+        with open(local_path, "rb") as f:
             client.upload_blob(remote_path, f)
-        except IsADirectoryError:
-            logger.warn("Cant upload dirs")
+    except IsADirectoryError:
+        logger.warn("Cant upload dirs")
+    except ResourceExistsError:
+        logger.warn(f"Seems that {remote_path} already exists")
 
 
 def download(remote_path: str, local_path: str):
