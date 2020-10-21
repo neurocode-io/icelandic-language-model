@@ -60,7 +60,14 @@ ssh azureuser@<machine_ip>
 
 screen
 
-docker run --gpus all -it --rm --ipc=host -v /tmp:/tmp --name icelandic donchev7/icelandic-model:v14ad2e6 python src/train_maskedLM.py --data_dir=/tmp --run_name=<SundayRunV1> 
+cat << EOF > .env
+ACCESS_KEY=<Mandatory Azure AccessKey>
+WANDB_API_KEY=<Optional>
+WANDB_PROJECT=<Optional>
+EOF
+
+docker run --gpus all -it --rm --env-file=.env --ipc=host -v /tmp:/tmp --name icelandic donchev7/icelandic-model:v14ad2e6 python src/train_ner.py --data_dir=/tmp --run_name=<SundayRunV1> 
+
 
 CTRL a + d to detatch from your screen session
 
@@ -72,4 +79,19 @@ Check back later:
 ssh azureuser@<machine_ip>
 
 screen -r
+```
+
+
+Use NER:
+```python
+from transformers import pipeline
+from transformers import AutoTokenizer
+tokenizer = AutoTokenizer.from_pretrained("neurocode/IsRoBERTa")
+
+nlp = pipeline("ner", model="./data/isroberta_malfong_ner/results", tokenizer=tokenizer)
+res = nlp("Eftir að henni lýkur er hægt að gerast áskrifandi að efni vefjarins fyrir 1.290 kr. á mánuði.")
+
+tokens = [r["word"] for r in res]
+tokenizer.convert_tokens_to_string(tokens)
+
 ```
