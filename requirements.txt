@@ -5,3 +5,5 @@ torch==1.6.0
 transformers==3.3.1
 tokenizers==0.8.1rc2
 python-dotenv==0.14.0
+onnxruntime==1.5.2
+onnxruntime-tools==1.5.2

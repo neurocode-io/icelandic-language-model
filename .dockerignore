@@ -5,3 +5,4 @@ Pipfile
 README.md
 data/
 .env
+onnx/

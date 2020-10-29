@@ -66,7 +66,11 @@ WANDB_API_KEY=<Optional>
 WANDB_PROJECT=<Optional>
 EOF
 
-docker run --gpus all -it --rm --env-file=.env --ipc=host -v /tmp:/tmp --name icelandic donchev7/icelandic-model:v14ad2e6 python src/train_ner.py --data_dir=/tmp --run_name=<SundayRunV1> 
+docker run --gpus all -it --rm \
+    --env-file=.env \
+    --ipc=host \
+    -v /tmp:/tmp \
+    donchev7/icelandic-model:vc0c9243 python src/train_xml_roberta_large.py --data_dir=/tmp --run_name=xml_roberta_large_malfong_ner
 
 
 CTRL a + d to detatch from your screen session
