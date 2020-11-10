@@ -1,3 +1,26 @@
+[tool.poetry]
+name = "icelandic-language-model"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+azure-storage-blob = "^12.5.0"
+wandb = "^0.10.10"
+torch = "^1.7.0"
+transformers = "^3.4.0"
+
+[tool.poetry.dev-dependencies]
+black = "^20.8b1"
+onnxruntime = "^1.5.2"
+onnxruntime-tools = "^1.5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.black]
 line-length = 120
 target-version = ['py38']

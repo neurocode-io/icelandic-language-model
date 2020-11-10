@@ -5,6 +5,7 @@ from language_model.NER.types import InputExample, InputFeatures
 
 logger = get_logger(__file__)
 
+
 def get_labels():
     return [
         "B-Date",

@@ -1,13 +1,11 @@
 from pathlib import Path
 
 from transformers.tokenization_roberta import RobertaTokenizerFast
-from language_model.lib import (
-    log,
-    azure_storage
-)
+from language_model.lib import log, azure_storage
 from transformers.tokenization_utils import PreTrainedTokenizer
 
 logger = log.get_logger(__file__)
+
 
 class Tokenizer:
     def __init__(self, data_dir: Path, tokenizer: PreTrainedTokenizer):
@@ -27,16 +25,15 @@ class Tokenizer:
             return True
 
         logger.info("Tokenizer not stored locally. Will check in azure")
-    
+
         if azure_storage.exists(f"{self.data_dir}/vocab.json"):
             azure_storage.download(f"{self.data_dir}/vocab.json", f"{self.data_dir}/vocab.json")
 
         if azure_storage.exists(f"{self.data_dir}/merges.txt"):
-            azure_storage.download(f"{self.data_dir}/merges.txt" , f"{self.data_dir}/merges.txt")
+            azure_storage.download(f"{self.data_dir}/merges.txt", f"{self.data_dir}/merges.txt")
             return True
-        
-        return False
 
+        return False
 
     def train(self):
         paths = [str(x) for x in Path(self.data_dir).glob("*.txt")]

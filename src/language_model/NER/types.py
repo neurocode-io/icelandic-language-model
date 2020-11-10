@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from dataclasses import dataclass
 from typing import List, Optional
 
+
 @dataclass
 class InputFeatures:
     """

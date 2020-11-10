@@ -23,9 +23,9 @@ class Malfong:
     def extract(self, zipfile_path):
         with ZipFile(zipfile_path, "r") as zf:
             for f in zf.namelist():
-                if f.startswith('/'):
+                if f.startswith("/"):
                     continue
-                
+
                 source = zf.open(f)
                 target = open(self.data_dir / Path(f).name, "wb")
 
@@ -49,7 +49,7 @@ class Malfong:
         if self.is_local_store():
             logger.info("Data already exists")
             return
-        
+
         file_path = f"{self.data_dir}/{self.file_name}"
         if azure_storage.exists(file_path):
             return azure_storage.download(file_path, file_path)

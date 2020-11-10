@@ -4,7 +4,7 @@ from azure.storage.blob import BlobServiceClient
 from language_model.config import Settings
 from language_model.lib.log import get_logger
 
-account_url = "https://neurocode2290877122.blob.core.windows.net"
+account_url = "https://isrobertalmmask.blob.core.windows.net"
 storage_container = "icelandic-model"
 creds = Settings().access_key
 

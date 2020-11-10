@@ -19,7 +19,7 @@ class TokenClassificationDataset(Dataset):
             max_seq_length=max_seq_length,
             tokenizer=tokenizer,
             cls_token_segment_id=0,
-            pad_token_label_id=self.pad_token_label_id
+            pad_token_label_id=self.pad_token_label_id,
         )
 
     def __len__(self):

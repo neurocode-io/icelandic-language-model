@@ -8,7 +8,7 @@ version := $(shell git rev-parse --short HEAD)
 all:	clean install
 
 install:
-	pip install -r requirements.txt
+	poetry install
 
 clean:
 	find . -name '*.pyc' -exec rm -f {} +
@@ -22,6 +22,7 @@ format:
 	black .
 
 deploy:
+  poetry export --output requirements.txt
 	docker build -t donchev7/icelandic-model:v$(version) .
 	docker push donchev7/icelandic-model:v$(version)
 
